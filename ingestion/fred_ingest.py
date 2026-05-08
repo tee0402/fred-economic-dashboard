@@ -43,7 +43,7 @@ SERIES = {
     "MEHOINUSA672N": "Real Median HouseHold Income"
 }
 
-TARGET_TABLE = "FRED_RAW_OBSERVATIONS"
+TARGET_TABLE = "FRED_OBSERVATIONS"
 
 # ── FRED API ──────────────────────────────────────────────────────────────────────
 
