@@ -1,0 +1,24 @@
+models:
+  - name: stg_fred__observations
+    description: The grain of this table is one unique observation (from an economic data series) per row
+    columns:
+      - name: series_id
+        description: The id of the economic data series which forms part of the primary key for the observations table
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['UNRATE', 'CIVPART', 'CPIAUCSL', 'A191RL1Q225SBEA', 'FEDFUNDS', 'MEHOINUSA672N']
+      - name: series_name
+        description: The name of the economic data series
+        data_tests:
+          - not_null
+      - name: date
+        description: The date of the observation which forms part of the primary key for the observations table
+        data_tests:
+          - not_null
+      - name: value
+        description: The value of the observation - NULL if FRED reported no observation
+    data_tests:
+      - unique:
+          column_name: "series_id || '-' || date"
