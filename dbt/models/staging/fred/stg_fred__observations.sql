@@ -10,9 +10,6 @@ renamed as (
         -- ids
         series_id,
 
-        -- strings
-        series_name,
-
         -- dates
         date,
         

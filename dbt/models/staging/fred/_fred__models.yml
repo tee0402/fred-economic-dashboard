@@ -9,10 +9,6 @@ models:
           - accepted_values:
               arguments:
                 values: ['UNRATE', 'CIVPART', 'CPIAUCSL', 'A191RL1Q225SBEA', 'FEDFUNDS', 'MEHOINUSA672N']
-      - name: series_name
-        description: The name of the economic data series
-        data_tests:
-          - not_null
       - name: date
         description: The date of the observation which forms part of the primary key for the observations table
         data_tests:
