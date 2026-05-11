@@ -33,15 +33,15 @@ SNOWFLAKE_CONFIG = {
     "schema": os.getenv("SNOWFLAKE_SCHEMA")
 }
 
-# Series to ingest: series_id → human-readable name
-SERIES = {
-    "UNRATE": "Unemployment Rate",
-    "CIVPART": "Labor Force Participation Rate",
-    "CPIAUCSL": "Consumer Price Index (CPI)",
-    "A191RL1Q225SBEA": "Real GDP Growth Rate",
-    "FEDFUNDS": "Federal Funds Effective Rate",
-    "MEHOINUSA672N": "Real Median Household Income"
-}
+# Series to ingest: series_id
+SERIES = [
+    "UNRATE",
+    "CIVPART",
+    "CPIAUCSL",
+    "A191RL1Q225SBEA",
+    "FEDFUNDS",
+    "MEHOINUSA672N"
+]
 
 TARGET_TABLE = "FRED_OBSERVATIONS"
 
@@ -58,9 +58,9 @@ def is_retryable(exception: Exception) -> bool:
     retry=retry_if_exception(is_retryable),
     before_sleep=before_sleep_log(log, logging.WARNING)
 )
-def fetch_series(series_id: str, series_name: str) -> pd.DataFrame:
+def fetch_series(series_id: str) -> pd.DataFrame:
     """Fetch all observations for a single FRED series with 3 retries using exponential backoff for retryable errors."""
-    log.info(f"Fetching {series_id}: {series_name}")
+    log.info(f"Fetching {series_id}")
 
     params = {
         "series_id": series_id,
@@ -86,9 +86,8 @@ def fetch_series(series_id: str, series_name: str) -> pd.DataFrame:
     df["date"] = pd.to_datetime(df["date"], errors="coerce")
     df["value"] = pd.to_numeric(df["value"], errors="coerce")
 
-    # Add metadata columns
+    # Add metadata column
     df["series_id"] = series_id
-    df["series_name"] = series_name
 
     # Drop rows where date parsing failed
     before = len(df)
@@ -106,9 +105,9 @@ def fetch_all_series() -> pd.DataFrame:
     """Fetch all configured FRED series and combine into one DataFrame."""
     frames = []
 
-    for series_id, series_name in SERIES.items():
+    for series_id in SERIES:
         try:
-            df = fetch_series(series_id, series_name)
+            df = fetch_series(series_id)
             if not df.empty:
                 frames.append(df)
         except Exception as e:
@@ -122,7 +121,7 @@ def fetch_all_series() -> pd.DataFrame:
     combined = pd.concat(frames, ignore_index=True)
 
     # Reorder columns cleanly
-    combined = combined[["series_id", "series_name", "date", "value"]]
+    combined = combined[["series_id", "date", "value"]]
 
     log.info(f"Total rows fetched across all series: {len(combined)}")
     return combined
@@ -146,7 +145,6 @@ def create_table_if_not_exists(conn: snowflake.connector.SnowflakeConnection):
     ddl = f"""
         CREATE TABLE IF NOT EXISTS {TARGET_TABLE} (
             SERIES_ID VARCHAR(50) NOT NULL,
-            SERIES_NAME VARCHAR(200) NOT NULL,
             DATE DATE NOT NULL,
             VALUE FLOAT,
             LOADED_AT TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
