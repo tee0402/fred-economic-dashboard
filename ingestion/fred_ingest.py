@@ -40,7 +40,7 @@ SERIES = {
     "CPIAUCSL": "Consumer Price Index (CPI)",
     "A191RL1Q225SBEA": "Real GDP Growth Rate",
     "FEDFUNDS": "Federal Funds Effective Rate",
-    "MEHOINUSA672N": "Real Median HouseHold Income"
+    "MEHOINUSA672N": "Real Median Household Income"
 }
 
 TARGET_TABLE = "FRED_OBSERVATIONS"
