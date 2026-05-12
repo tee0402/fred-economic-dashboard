@@ -1,0 +1,21 @@
+models:
+  - name: economic_indicators
+    description: One month per row with all the economic indicators available for that month
+    columns:
+      - name: month
+        description: The month of the observation
+        data_tests:
+          - unique
+          - not_null
+      - name: unemployment_rate
+        description: "{{ doc('unemployment_rate') }}"
+      - name: labor_force_participation_rate
+        description: "{{ doc('labor_force_participation_rate') }}"
+      - name: consumer_price_index
+        description: "{{ doc('consumer_price_index') }}"
+      - name: real_gdp_growth_rate
+        description: "{{ doc('real_gdp_growth_rate') }}"
+      - name: federal_funds_effective_rate
+        description: "{{ doc('federal_funds_effective_rate') }}"
+      - name: real_median_household_income
+        description: "{{ doc('real_median_household_income') }}"
