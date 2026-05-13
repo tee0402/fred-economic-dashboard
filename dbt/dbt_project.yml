@@ -39,5 +39,7 @@ models:
   fred_economics:
     staging:
       +materialized: view
+      +schema: staging
     marts:
       +materialized: table
+      +schema: marts
