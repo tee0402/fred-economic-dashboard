@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: fred
+    database: fred_economics
+    schema: raw
+    tables:
+      - name: fred_observations
+        description: Raw FRED API data
+        columns:
+          - name: series_id
+            description: Part of the primary key for observations data
+            data_tests:
+              - not_null
+          - name: date
+            description: Part of the primary key for observations data
+            data_tests:
+              - not_null
+        config:
+          freshness:
+            warn_after:
+              count: 45
+              period: day
+          loaded_at_field: loaded_at
