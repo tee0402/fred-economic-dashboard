@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import logging
 import os
+from cryptography.hazmat.primitives import serialization
 import requests
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception, before_sleep_log
 import pandas as pd
@@ -19,6 +20,25 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
+
+def load_private_key() -> bytes:
+    """Load private key for Snowflake key pair authentication."""
+    private_key_path = os.path.expanduser(os.getenv("SNOWFLAKE_PRIVATE_KEY_PATH"))
+    passphrase = os.getenv("SNOWFLAKE_PRIVATE_KEY_PASSPHRASE")
+
+    with open(private_key_path, "rb") as f:
+        private_key = serialization.load_pem_private_key(
+            f.read(),
+            password=passphrase.encode() if passphrase else None
+        )
+
+    return private_key.private_bytes(
+        encoding=serialization.Encoding.DER,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption()
+    )
+
+
 # ── Config ──────────────────────────────────────────────────────────────────────
 
 FRED_API_KEY = os.getenv("FRED_API_KEY")
@@ -26,11 +46,11 @@ FRED_BASE_URL = "https://api.stlouisfed.org/fred/series/observations"
 
 SNOWFLAKE_CONFIG = {
     "user": os.getenv("SNOWFLAKE_USER"),
-    "password": os.getenv("SNOWFLAKE_PASSWORD"),
     "account": os.getenv("SNOWFLAKE_ACCOUNT"),
     "warehouse": os.getenv("SNOWFLAKE_WAREHOUSE"),
     "database": os.getenv("SNOWFLAKE_DATABASE"),
-    "schema": os.getenv("SNOWFLAKE_SCHEMA")
+    "schema": os.getenv("SNOWFLAKE_SCHEMA"),
+    "private_key": load_private_key()
 }
 
 # Series to ingest: series_id
