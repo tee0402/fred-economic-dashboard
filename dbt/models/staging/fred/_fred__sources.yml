@@ -19,6 +19,9 @@ sources:
         config:
           freshness:
             warn_after:
-              count: 45
+              count: 10
+              period: day
+            error_after:
+              count: 14
               period: day
           loaded_at_field: loaded_at
