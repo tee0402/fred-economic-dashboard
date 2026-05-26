@@ -40,7 +40,7 @@ dbt lineage:
 
 **One mart for all charts** — A single mart serves all charts rather than one mart per chart or section. Each series is pivoted into its own column (long to wide), with one row per month (the lowest common denominator). This means only one Data Studio source connection is needed.
 
-**No intermediate layer** — Analysis of the data reveals that FRED already returns clean month-start dates for all series, so date truncation or a date spine is not needed.
+**No intermediate layer** — Analysis of the data reveals that FRED already returns clean month-start dates for all series, and complete months with no gaps for all monthly series, so date truncation or a date spine is not needed.
 
 **No forward fill** — The quarterly and annual series retain nulls for non-reporting months rather than forward filling since nulls are more honest and convey useful information about the reporting cadence. Data Studio natively handles quarterly and yearly dimensions in time series charts.
 
