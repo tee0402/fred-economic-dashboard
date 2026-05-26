@@ -4,5 +4,5 @@ select
     count(distinct date) as distinct_months,
     datediff('month', min(date), max(date)) + 1 as expected_months
 from {{ source('fred', 'fred_observations') }}
-where series_id in ('CIVPART', 'UNRATE', 'CPIAUCSL', 'FEDFUNDS')
-group by series_id
+where series_id in ('UNRATE', 'CIVPART', 'CPIAUCSL', 'FEDFUNDS')
+group by 1
