@@ -35,10 +35,10 @@ def fred_pipeline():
             text=True,
             env={**os.environ}
         )
+        log.info(result.stdout)
         if result.returncode != 0:
             log.error(result.stderr)
             raise RuntimeError(f"Ingestion failed:\n{result.stderr}")
-        log.info(result.stdout)
         return {"status": "success", "timestamp": str(datetime.now())}
     
 
@@ -56,10 +56,10 @@ def fred_pipeline():
             text=True,
             env={**os.environ}
         )
+        log.info(result.stdout)
         if result.returncode != 0:
             log.error(result.stderr)
             raise RuntimeError(f"dbt deps failed:\n{result.stderr}")
-        log.info(result.stdout)
         return {"status": "success", "timestamp": str(datetime.now())}
     
     @task
@@ -76,10 +76,10 @@ def fred_pipeline():
             text=True,
             env={**os.environ}
         )
+        log.info(result.stdout)
         if result.returncode != 0:
             log.error(result.stderr)
             raise RuntimeError(f"Freshness check failed:\n{result.stderr}")
-        log.info(result.stdout)
         return {"status": "success", "timestamp": str(datetime.now())}
 
 
@@ -97,10 +97,10 @@ def fred_pipeline():
             text=True,
             env={**os.environ}
         )
+        log.info(result.stdout)
         if result.returncode != 0:
             log.error(result.stderr)
             raise RuntimeError(f"dbt build failed:\n{result.stderr}")
-        log.info(result.stdout)
         return {"status": "success", "timestamp": str(datetime.now())}
 
 
