@@ -1,0 +1,7 @@
+cryptography
+pandas
+python-dotenv
+requests
+snowflake-connector-python[pandas]
+tenacity
+apache-airflow-providers-snowflake
