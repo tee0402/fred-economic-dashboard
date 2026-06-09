@@ -4,5 +4,4 @@ python-dotenv
 requests
 snowflake-connector-python[pandas]
 tenacity
-apache-airflow-providers-snowflake
 dbt-snowflake
