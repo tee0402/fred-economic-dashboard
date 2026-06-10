@@ -57,3 +57,37 @@ dbt lineage:
 | Transformation | dbt Cloud |
 | Orchestration | GitHub Actions, dbt Cloud |
 | Dashboard | Data (Looker) Studio |
+
+## Orchestration
+
+### Production — automated weekly
+
+| Step | Schedule | Tool |
+|---|---|---|
+| Ingestion | Monday 8am UTC | GitHub Actions |
+| Transformation | Monday 10am UTC | dbt Cloud |
+
+### Local Development
+
+Alternative orchestration using Apache Airflow on Docker locally demonstrating DAG-based dependency management.
+
+**Prerequisites:** Docker Desktop with 4GB+ memory allocated
+
+```bash
+cd airflow
+cp .env.example .env    # fill in credentials
+docker compose build
+docker compose up airflow-init
+docker compose up -d
+```
+
+Open http://localhost:8080 (username: `airflow`, password: `airflow`). Enable the `fred_economics_pipeline` DAG and trigger a manual run.
+
+**Pipeline tasks:**
+
+1. **ingest** — pulls FRED data from the API into Snowflake raw layer
+2. **deps** — installs dbt package dependencies
+3. **freshness** — validates source data freshness before transformation
+4. **build** — runs dbt models and tests in dependency order
+
+Failed tasks trigger one automatic retry after 5 minutes. Downstream tasks are skipped if an upstream task fails.
