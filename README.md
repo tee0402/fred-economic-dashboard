@@ -1,6 +1,6 @@
 # FRED Economic Data Dashboard
 
-End-to-end data pipeline ingesting Federal Reserve economic indicators into Snowflake, modeled with dbt, and visualized in Data (Looker) Studio.
+End-to-end data pipeline ingesting Federal Reserve economic indicators into Snowflake, modeled with dbt, and visualized in Looker Studio.
 
 ## Live Dashboard
 
@@ -9,10 +9,10 @@ End-to-end data pipeline ingesting Federal Reserve economic indicators into Snow
 ## Architecture
 
 ```
-FRED API → Python (ingestion) → Snowflake (raw) → dbt (staging → marts) → Data Studio
+FRED API → Python (ingestion) → Snowflake (raw) → dbt (staging → marts) → Looker Studio
 ```
 
-Automated weekly via GitHub Actions (ingestion) and dbt Cloud (transformation).
+Automated weekly via GitHub Actions (ingestion) and dbt Cloud (transformation). Local orchestration available via Apache Airflow on Docker.
 
 dbt lineage:
 ![dbt lineage](docs/dbt_lineage.png)
@@ -38,13 +38,13 @@ dbt lineage:
 
 **One raw table for all series** — Data from all series land in a single Snowflake table with a `series_id` column to distinguish them rather than one table per series. This is possible because all series share an identical schema (`date`, `value`). This makes it easy to add a new series without creating a new table or updating the staging layer.
 
-**One mart for all charts** — A single mart serves all charts rather than one mart per chart or section. Each series is pivoted into its own column (long to wide), with one row per month (the lowest common denominator). This means only one Data Studio source connection is needed.
+**One mart for all charts** — A single mart serves all charts rather than one mart per chart or section. Each series is pivoted into its own column (long to wide), with one row per month (the lowest common denominator). This means only one Looker Studio source connection is needed.
 
 **No intermediate layer** — Analysis of the data reveals that FRED already returns clean month-start dates for all series, and complete months with no gaps for all monthly series, so date truncation or a date spine is not needed.
 
-**No forward fill** — The quarterly and annual series retain nulls for non-reporting months rather than forward filling since nulls are more honest and convey useful information about the reporting cadence. Data Studio natively handles quarterly and yearly dimensions in time series charts.
+**No forward fill** — The quarterly and annual series retain nulls for non-reporting months rather than forward filling since nulls are more honest and convey useful information about the reporting cadence. Looker Studio natively handles quarterly and yearly dimensions in time series charts.
 
-**Nulls preserved throughout pipeline** — FRED uses `"."` for missing observations (from the 2025 government shutdown). These are converted to NULL at ingestion and carried through staging and marts unchanged. Null filtering is handled per chart in Data Studio (to only show dates where data is available). This keeps the mart a faithful representation of the source data.
+**Nulls preserved throughout pipeline** — FRED uses `"."` for missing observations (from the 2025 government shutdown). These are converted to NULL at ingestion and carried through staging and marts unchanged. Null filtering is handled per chart in Looker Studio (to only show dates where data is available). This keeps the mart a faithful representation of the source data.
 
 **Weekly ingestion/transformation** — FRED publishes updates for different series at different times during the month. A weekly cadence ensures that the dashboard reflects fresh data within a week of any release. Ingestion runs via GitHub Actions and transformation via dbt Cloud, triggered two hours apart on the same schedule.
 
@@ -55,8 +55,9 @@ dbt lineage:
 | Ingestion | Python (pandas, requests, tenacity) |
 | Storage | Snowflake (Standard, X-Small Warehouse) |
 | Transformation | dbt Cloud |
-| Orchestration | GitHub Actions, dbt Cloud |
-| Dashboard | Data (Looker) Studio |
+| Orchestration | GitHub Actions, dbt Cloud, Airflow (local) |
+| Containerization | Docker |
+| Dashboard | Looker Studio |
 
 ## Orchestration
 
