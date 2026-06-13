@@ -1,21 +1,32 @@
 # FRED Economic Data Dashboard
 
-End-to-end data pipeline ingesting Federal Reserve economic indicators into Snowflake, modeled with dbt, and visualized in Looker Studio.
+End-to-end data pipeline ingesting Federal Reserve economic indicators into Snowflake, modeled with dbt, and visualized in Looker Studio and Power BI.
 
-## Live Dashboard
+## Dashboards
+
+### Looker Studio (live, refreshes weekly)
 
 [View Dashboard →](https://datastudio.google.com/reporting/7cfaa663-9ac0-480d-a814-ee6d0d072419)
+
+### Power BI
+
+![Power BI Labor Market](/docs/powerbi_labor_market.png)
+![Power BI Inflation and Monetary Policy](/docs/powerbi_inflation_and_monetary_policy.png)
+![Power BI Economic Output and Income](/docs/powerbi_economic_output_and_income.png)
 
 ## Architecture
 
 ```
-FRED API → Python (ingestion) → Snowflake (raw) → dbt (staging → marts) → Looker Studio
+FRED API → Python (ingestion) → Snowflake (raw) → dbt (staging → marts) → Looker Studio/Power BI
 ```
 
 Automated weekly via GitHub Actions (ingestion) and dbt Cloud (transformation). Local orchestration available via Apache Airflow on Docker.
 
 dbt lineage:
 ![dbt lineage](docs/dbt_lineage.png)
+
+Power BI model:
+![Power BI Model](/docs/powerbi_model.png)
 
 ## Indicators
 
@@ -57,7 +68,7 @@ dbt lineage:
 | Transformation | dbt Cloud |
 | Orchestration | GitHub Actions, dbt Cloud, Airflow (local) |
 | Containerization | Docker |
-| Dashboard | Looker Studio |
+| Dashboard | Looker Studio, Power BI |
 
 ## Orchestration
 
