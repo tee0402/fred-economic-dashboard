@@ -10,10 +10,10 @@ End-to-end data pipeline ingesting Federal Reserve economic indicators into Snow
 
 ### Power BI
 
-![Power BI Labor Market](docs/powerbi_labor_market.png)
+![Power BI Inflation and Monetary Policy](docs/powerbi_inflation_and_monetary_policy.png)
 
 Additional Screenshots:
-- [Power BI Inflation and Monetary Policy](docs/powerbi_inflation_and_monetary_policy.png)
+- [Power BI Labor Market](docs/powerbi_labor_market.png)
 - [Power BI Economic Output and Income](docs/powerbi_economic_output_and_income.png)
 - [Power BI Model](docs/powerbi_model.png)
 
