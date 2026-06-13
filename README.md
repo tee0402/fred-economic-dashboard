@@ -10,9 +10,12 @@ End-to-end data pipeline ingesting Federal Reserve economic indicators into Snow
 
 ### Power BI
 
-![Power BI Labor Market](/docs/powerbi_labor_market.png)
-![Power BI Inflation and Monetary Policy](/docs/powerbi_inflation_and_monetary_policy.png)
-![Power BI Economic Output and Income](/docs/powerbi_economic_output_and_income.png)
+![Power BI Labor Market](docs/powerbi_labor_market.png)
+
+Additional Screenshots:
+- [Power BI Inflation and Monetary Policy](docs/powerbi_inflation_and_monetary_policy.png)
+- [Power BI Economic Output and Income](docs/powerbi_economic_output_and_income.png)
+- [Power BI Model](docs/powerbi_model.png)
 
 ## Architecture
 
@@ -23,10 +26,8 @@ FRED API → Python (ingestion) → Snowflake (raw) → dbt (staging → marts) 
 Automated weekly via GitHub Actions (ingestion) and dbt Cloud (transformation). Local orchestration available via Apache Airflow on Docker.
 
 dbt lineage:
-![dbt lineage](docs/dbt_lineage.png)
 
-Power BI model:
-![Power BI Model](/docs/powerbi_model.png)
+![dbt lineage](docs/dbt_lineage.png)
 
 ## Indicators
 
