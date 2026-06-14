@@ -141,6 +141,9 @@ def fetch_all_series() -> pd.DataFrame:
 
     combined = pd.concat(frames, ignore_index=True)
 
+    # Drop USREC rows before earliest date of other series
+    combined = combined[~((combined["series_id"] == "USREC") & (combined["date"] < "1947-01-01"))]
+
     # Reorder columns cleanly
     combined = combined[["series_id", "date", "value"]]
 
