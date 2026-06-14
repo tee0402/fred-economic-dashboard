@@ -8,7 +8,7 @@ models:
           - not_null
           - accepted_values:
               arguments:
-                values: ['UNRATE', 'CIVPART', 'CPIAUCSL', 'A191RL1Q225SBEA', 'FEDFUNDS', 'MEHOINUSA672N']
+                values: ['UNRATE', 'CIVPART', 'CPIAUCSL', 'A191RL1Q225SBEA', 'FEDFUNDS', 'MEHOINUSA672N', 'USREC']
       - name: date
         description: The date of the observation which forms part of the primary key for the observations table
         data_tests:

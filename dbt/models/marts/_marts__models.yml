@@ -19,3 +19,10 @@ models:
         description: "{{ doc('federal_funds_effective_rate') }}"
       - name: real_median_household_income
         description: "{{ doc('real_median_household_income') }}"
+      - name: is_recession
+        description: "{{ doc('is_recession') }}"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+                quote: false

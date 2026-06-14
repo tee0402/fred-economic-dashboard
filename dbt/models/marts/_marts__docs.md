@@ -48,3 +48,11 @@ Annual frequency, sourced from the U.S. Census Bureau via FRED.
 See https://fred.stlouisfed.org/series/MEHOINUSA672N for full methodology.
 
 {% enddocs %}
+
+{% docs is_recession %}
+
+Indicates periods of expansion and recession in the U.S. based on NBER data.  
+Monthly frequency, sourced from Federal Reserve Bank of St. Louis via FRED.  
+See https://fred.stlouisfed.org/series/USREC for full methodology.
+
+{% enddocs %}

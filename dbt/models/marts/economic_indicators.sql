@@ -15,7 +15,8 @@ pivot_and_align_dates_to_monthly_grain as (
         max(case when series_id = 'CPIAUCSL' then value end) as consumer_price_index,
         max(case when series_id = 'A191RL1Q225SBEA' then value end) as real_gdp_growth_rate,
         max(case when series_id = 'FEDFUNDS' then value end) as federal_funds_effective_rate,
-        max(case when series_id = 'MEHOINUSA672N' then value end) as real_median_household_income
+        max(case when series_id = 'MEHOINUSA672N' then value end) as real_median_household_income,
+        max(case when series_id = 'USREC' then value end) as is_recession
 
     from observations
     group by 1
